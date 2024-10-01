@@ -27,3 +27,79 @@ SELECT * FROM employee;
 SELECT salary FROM employee;
 
 SELECT DISTINCT job_name FROM employee;
+
+SELECT emp_name, ROUND(salary*1.15,2) AS new_salary FROM employee;
+
+SELECT CONCAT(emp_name," - ",job_name) AS employee_job FROM employee;
+
+SELECT emp_id,emp_name,salary,DATE_FORMAT(hire_date, '%M %d,%Y') AS formatted_hire_date FROM employee;
+
+SELECT emp_name,LENGTH(REPLACE(emp_name,"","")) AS name_length FROM employee;
+
+SELECT emp_id,salary,commission FROM employee;
+
+SELECT * FROM employee WHERE dep_id NOT IN(2001);
+
+SELECT * FROM employee WHERE hire_date < '1991-01-01';
+
+SELECT AVG(salary) AS avg_salary FROM employee WHERE job_name='ANALYST';
+
+SELECT * FROM employee WHERE emp_name="BLAZE";
+
+SELECT * FROM employee WHERE (salary*1.25) > 3000;
+
+SELECT * FROM employee WHERE MONTH(hire_date)=2;
+
+SELECT * FROM employee WHERE hire_date<'1991-04-01';
+
+SELECT emp_name,salary FROM employee WHERE emp_name="FRANK" AND salary BETWEEN 
+(SELECT MIN(salary) FROM employee) AND (SELECT MAX(salary) FROM employee);
+
+SELECT * FROM employee WHERE job_name NOT IN('PRESIDENT','MANAGER') ORDER BY salary ASC;
+
+SELECT * FROM employee WHERE salary=(SELECT MAX(salary) FROM employee);
+
+SELECT job_name,AVG(salary) AS avg_salary ,AVG(salary+commission) AS avg_renumeration 
+FROM employee GROUP BY job_name;
+
+SELECT * FROM employee WHERE dep_id IN (1001 ,2001);
+
+SELECT manager_id,COUNT(emp_id) AS NO_OF_EMPLOYEES FROM employee
+GROUP BY manager_id ORDER BY manager_id ASC;
+
+SELECT dep_id,COUNT(emp_id) AS emp_count 
+FROM employee 
+GROUP BY dep_id
+HAVING COUNT(emp_id)>=2;
+
+SELECT * FROM employee
+WHERE emp_name LIKE '%AR%';
+
+ALTER TABLE employee
+ADD COLUMN gender VARCHAR(10);
+SET SQL_SAFE_UPDATES = 0;
+UPDATE employee
+SET gender= CASE emp_name
+    WHEN 'KAYLING' THEN 'F'
+    WHEN 'BLAZE' THEN 'M'
+    WHEN 'CLARE' THEN 'F'
+    WHEN 'JONAS' THEN 'M'
+    WHEN 'SCARLET' THEN 'F'
+    WHEN 'FRANK' THEN 'M'
+    WHEN 'SANDRINE' THEN 'F'
+    WHEN 'ADELYN' THEN 'F'
+    WHEN 'WADE' THEN 'M'
+    WHEN 'MADDEN' THEN 'M'
+    WHEN 'TUCKER' THEN 'M'
+    WHEN 'ADNRES' THEN 'F'
+    WHEN 'JULIUS' THEN 'M'
+    WHEN 'MARKER' THEN 'M'
+    ELSE NULL  
+END;
+
+SELECT emp_name,job_name,
+CASE WHEN job_name IN ('PRESIDENT','MANAGER','ANALYST') THEN 'MANAGMENT LEVEL'
+WHEN job_name IN ('SALESMAN','CLERK') THEN 'EMPLOYEE LEVEL'
+ELSE 'Other Level'
+END AS level 
+FROM employee;
